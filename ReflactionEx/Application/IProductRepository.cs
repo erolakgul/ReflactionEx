@@ -2,7 +2,7 @@
 
 namespace ReflactionEx.Application
 {
-    public interface IProductRepository
+    public interface IProductRepository //: IRepository<Product>
     {
         List<Product> GetAllProduct();
         Product GetProductByIdAsync(int id);

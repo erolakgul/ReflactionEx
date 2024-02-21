@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿using ReflactionEx.Application;
+using ReflactionEx.Models;
+using System.Reflection;
 
 Assembly assembly = Assembly.GetExecutingAssembly();
 
@@ -41,6 +43,28 @@ foreach (var type in types)
         foreach (var mtd in methods)
         {
             Console.WriteLine($"{space}{mtd.Name.ToString()} - {mtd.ReturnType}");
+
+            #region invoke ile method çalıştırma
+            if (mtd.Name == "GetAllProduct" && type.IsClass)
+            {
+                object[] parameters = new object[] { };// { 10, 20 };
+
+                var resultData = mtd.Invoke(new ProductRepository(), parameters);
+                var resultItems = (List<Product>) resultData;
+
+                if (resultItems.Count > 0)
+                {
+                    Console.WriteLine("\n");
+                    Console.WriteLine($"{space}{starts} Method Data List {starts}");
+                    foreach (var rItem in resultItems)
+                    {
+                        Console.WriteLine($"{space}{space} {rItem.Id} - {rItem.Desc} - {rItem.Price} - {rItem.CreateAt} - {rItem.IsInStock}");
+                    }
+                    Console.WriteLine("\n");
+                }
+               
+            } 
+            #endregion
         }
 
         Console.WriteLine("\n");
