@@ -12,9 +12,9 @@ Console.WriteLine($"{starts} Application {starts}");
 Console.WriteLine(assembly);
 Console.WriteLine("\n");
 
-// sistmede oluşturduğumuz class ve interface tipleri alınır (sealed olarak işaretlenmemişler alınır)
+// sistmede oluşturduğumuz class ve interface tipleri alınır 
 var types = assembly.GetTypes()
-                    .Where(t => (t.IsClass || t.IsInterface || t.IsEnum )) //  && t.MemberType == MemberTypes.Method
+                    .Where(t => (t.IsClass || t.IsInterface || t.IsEnum ) && !t.Name.Contains("<")) 
                     .ToArray();
 
 Console.WriteLine($"{starts} Types {starts}");
@@ -43,6 +43,23 @@ foreach (var type in types)
             Console.WriteLine($"{space}{mtd.Name.ToString()} - {mtd.ReturnType}");
         }
 
+        Console.WriteLine("\n");
+    }
+
+    #endregion
+
+    #region fields
+    var fields = type.GetFields().Where(x=> !x.Name.Contains("_")).ToArray();
+
+    if (fields.Length >0)
+    {
+        Console.WriteLine("\n");
+        Console.WriteLine($"{space}{starts} Fields {starts}");
+
+        foreach (var field in fields)
+        {
+            Console.WriteLine($"{space}{field.Name.ToString()} - {field.FieldType.Name}");
+        }
         Console.WriteLine("\n");
     }
 
